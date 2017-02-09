@@ -44,3 +44,27 @@ resource "aws_s3_bucket" "mod" {
     Environment = "${var.environment}"
   }
 }
+
+output "name" {
+  value = "${aws_s3_bucket.mod.id}"
+}
+
+output "arn" {
+  value = "${aws_s3_bucket.mod.arn}"
+}
+
+output "domain" {
+  value = "${aws_s3_bucket.mod.bucket_domain_name}"
+}
+
+output "logging_name" {
+  value = "${aws_s3_bucket.logging.id}"
+}
+
+output "logging_arn" {
+  value = "${aws_s3_bucket.logging.arn}"
+}
+
+output "logging_domain" {
+  value = "${aws_s3_bucket.logging.bucket_domain_name}"
+}
