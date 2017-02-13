@@ -16,10 +16,16 @@ variable "bucket_suffix" {
   default     = "infra"
 }
 
+variable "force_destroy" {
+  default = false
+}
+
 resource "aws_s3_bucket" "logging" {
   bucket = "${format("%s-%s-%s-logs", var.name, var.environment, var.bucket_suffix)}"
   acl    = "log-delivery-write"
   region = "${var.region}"
+
+  force_destroy = "${var.force_destroy}"
 
   tags {
     Environment = "${var.environment}"
@@ -30,6 +36,8 @@ resource "aws_s3_bucket" "mod" {
   bucket = "${format("%s-%s-%s", var.name, var.environment, var.bucket_suffix)}"
   acl    = "private"
   region = "${var.region}"
+
+  force_destroy = "${var.force_destroy}"
 
   versioning {
     enabled = true
