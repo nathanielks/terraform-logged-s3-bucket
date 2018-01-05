@@ -11,21 +11,20 @@ variable "region" {
   default     = "ca-central-1"
 }
 
-variable "bucket_suffix" {
-  description = "Additional key to more uniquely identify the bucket name"
-  default     = "infra"
-}
-
 variable "force_destroy" {
   default = false
 }
 
 resource "aws_s3_bucket" "logging" {
-  bucket = "${format("%s-%s-%s-logs", var.name, var.environment, var.bucket_suffix)}"
+  bucket = "${format("%s-logs", var.name)}"
   acl    = "log-delivery-write"
   region = "${var.region}"
 
   force_destroy = "${var.force_destroy}"
+
+  versioning {
+    enabled = true
+  }
 
   tags {
     Environment = "${var.environment}"
@@ -33,7 +32,7 @@ resource "aws_s3_bucket" "logging" {
 }
 
 resource "aws_s3_bucket" "mod" {
-  bucket = "${format("%s-%s-%s", var.name, var.environment, var.bucket_suffix)}"
+  bucket = "${var.name}"
   acl    = "private"
   region = "${var.region}"
 
