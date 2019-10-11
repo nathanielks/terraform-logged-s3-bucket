@@ -16,11 +16,11 @@ variable "force_destroy" {
 }
 
 resource "aws_s3_bucket" "logging" {
-  bucket = "${format("%s-logs", var.name)}"
+  bucket = format("%s-logs", var.name)
   acl    = "log-delivery-write"
-  region = "${var.region}"
+  region = var.region
 
-  force_destroy = "${var.force_destroy}"
+  force_destroy = var.force_destroy
 
   versioning {
     enabled = true
@@ -34,17 +34,17 @@ resource "aws_s3_bucket" "logging" {
     }
   }
 
-  tags {
-    Environment = "${var.environment}"
+  tags = {
+    Environment = var.environment
   }
 }
 
 resource "aws_s3_bucket" "mod" {
-  bucket = "${var.name}"
+  bucket = var.name
   acl    = "private"
-  region = "${var.region}"
+  region = var.region
 
-  force_destroy = "${var.force_destroy}"
+  force_destroy = var.force_destroy
 
   versioning {
     enabled = true
@@ -59,35 +59,36 @@ resource "aws_s3_bucket" "mod" {
   }
 
   logging {
-    target_bucket = "${aws_s3_bucket.logging.id}"
+    target_bucket = aws_s3_bucket.logging.id
     target_prefix = "log/"
   }
 
-  tags {
-    Environment = "${var.environment}"
+  tags = {
+    Environment = var.environment
   }
 }
 
 output "name" {
-  value = "${aws_s3_bucket.mod.id}"
+  value = aws_s3_bucket.mod.id
 }
 
 output "arn" {
-  value = "${aws_s3_bucket.mod.arn}"
+  value = aws_s3_bucket.mod.arn
 }
 
 output "domain" {
-  value = "${aws_s3_bucket.mod.bucket_domain_name}"
+  value = aws_s3_bucket.mod.bucket_domain_name
 }
 
 output "logging_name" {
-  value = "${aws_s3_bucket.logging.id}"
+  value = aws_s3_bucket.logging.id
 }
 
 output "logging_arn" {
-  value = "${aws_s3_bucket.logging.arn}"
+  value = aws_s3_bucket.logging.arn
 }
 
 output "logging_domain" {
-  value = "${aws_s3_bucket.logging.bucket_domain_name}"
+  value = aws_s3_bucket.logging.bucket_domain_name
 }
+
